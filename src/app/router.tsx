@@ -19,81 +19,84 @@ const pageLoader = (
   </div>
 )
 
-export const router = createBrowserRouter([
-  {
-    path: '/',
-    element: <Navigate to="/dashboard" replace />,
-  },
-  {
-    path: '/login',
-    element: <LoginPage />,
-  },
-  {
-    // Top-level auth guard — all /dashboard/* routes require auth
-    element: <ProtectedRoute requireAuth />,
-    children: [
-      {
-        element: <DashboardLayout />,
-        children: [
-          {
-            path: '/dashboard',
-            element: (
-              <Suspense fallback={pageLoader}>
-                <OverviewPage />
-              </Suspense>
-            ),
-          },
-          {
-            path: '/dashboard/tenants',
-            element: (
-              <Suspense fallback={pageLoader}>
-                <TenantsPage />
-              </Suspense>
-            ),
-          },
-          {
-            // Billing requires billing:read permission — viewers get redirected
-            element: <ProtectedRoute requirePermission="billing:read" />,
-            children: [
-              {
-                path: '/dashboard/billing',
-                element: (
-                  <Suspense fallback={pageLoader}>
-                    <BillingPage />
-                  </Suspense>
-                ),
-              },
-            ],
-          },
-          {
-            element: <ProtectedRoute requirePermission="users:read" />,
-            children: [
-              {
-                path: '/dashboard/users',
-                element: (
-                  <Suspense fallback={pageLoader}>
-                    <UsersPage />
-                  </Suspense>
-                ),
-              },
-            ],
-          },
-          {
-            // Settings requires settings:read — only admin
-            element: <ProtectedRoute requirePermission="settings:read" />,
-            children: [
-              {
-                path: '/dashboard/settings',
-                element: (
-                  <Suspense fallback={pageLoader}>
-                    <SettingsPage />
-                  </Suspense>
-                ),
-              },
-            ],
-          },
-        ],
-      },
-    ],
-  },
-])
+export const router = createBrowserRouter(
+  [
+    {
+      path: '/',
+      element: <Navigate to="/dashboard" replace />,
+    },
+    {
+      path: '/login',
+      element: <LoginPage />,
+    },
+    {
+      // Top-level auth guard — all /dashboard/* routes require auth
+      element: <ProtectedRoute requireAuth />,
+      children: [
+        {
+          element: <DashboardLayout />,
+          children: [
+            {
+              path: '/dashboard',
+              element: (
+                <Suspense fallback={pageLoader}>
+                  <OverviewPage />
+                </Suspense>
+              ),
+            },
+            {
+              path: '/dashboard/tenants',
+              element: (
+                <Suspense fallback={pageLoader}>
+                  <TenantsPage />
+                </Suspense>
+              ),
+            },
+            {
+              // Billing requires billing:read permission — viewers get redirected
+              element: <ProtectedRoute requirePermission="billing:read" />,
+              children: [
+                {
+                  path: '/dashboard/billing',
+                  element: (
+                    <Suspense fallback={pageLoader}>
+                      <BillingPage />
+                    </Suspense>
+                  ),
+                },
+              ],
+            },
+            {
+              element: <ProtectedRoute requirePermission="users:read" />,
+              children: [
+                {
+                  path: '/dashboard/users',
+                  element: (
+                    <Suspense fallback={pageLoader}>
+                      <UsersPage />
+                    </Suspense>
+                  ),
+                },
+              ],
+            },
+            {
+              // Settings requires settings:read — only admin
+              element: <ProtectedRoute requirePermission="settings:read" />,
+              children: [
+                {
+                  path: '/dashboard/settings',
+                  element: (
+                    <Suspense fallback={pageLoader}>
+                      <SettingsPage />
+                    </Suspense>
+                  ),
+                },
+              ],
+            },
+          ],
+        },
+      ],
+    },
+  ],
+  { basename: import.meta.env.BASE_URL }
+)
