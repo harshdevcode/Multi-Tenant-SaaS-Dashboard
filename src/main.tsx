@@ -4,12 +4,11 @@ import { App } from './app/App'
 import './index.css'
 
 async function enableMocking() {
-  if (import.meta.env.DEV) {
-    const { worker } = await import('./lib/msw/browser')
-    return worker.start({
-      onUnhandledRequest: 'bypass',
-    })
-  }
+  // Enable MSW in both DEV and PROD so mock APIs work everywhere
+  const { worker } = await import('./lib/msw/browser')
+  return worker.start({
+    onUnhandledRequest: 'bypass',
+  })
 }
 
 enableMocking().then(() => {
