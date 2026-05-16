@@ -14,7 +14,7 @@
 .vscode/
 
 # lockfiles
-package-lock.json
+# package-lock.json
 
 # logs
 npm-debug.log*
