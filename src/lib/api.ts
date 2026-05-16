@@ -14,13 +14,17 @@ import type {
 
 // ─── Axios instance ───────────────────────────────────────────────────────────
 
+type ViteImportMeta = {
+  env?: Record<string, string | undefined>
+}
+
 const getViteEnv = (key: string) => {
   if (typeof process !== 'undefined' && process.env?.[key]) {
     return process.env[key]
   }
 
   try {
-    return (eval('import.meta') as any).env?.[key]
+    return (eval('import.meta') as ViteImportMeta).env?.[key]
   } catch {
     return undefined
   }
